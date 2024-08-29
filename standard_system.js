@@ -49,6 +49,8 @@ var system_command = '';
 var reload_seconds;
 var system_params = {};
 var system_msgs = {
+    'logfile'               : 'Display the logfile',
+    'clear_log'             : 'Clear the logfile',
     'restart_service'       : 'Restart the service',
     'shutdown_system'       : 'Shutdown the system',
     'reboot'                : 'Reboot the computer',
@@ -56,6 +58,15 @@ var system_msgs = {
     'forward_start'         : 'Start port forwarding',
     'forward_stop'          : 'Stop port forwarding',
     'update_system_stash'   : 'Stash changes and update the system source code', };
+
+
+function isStandardSystemCommand(command)
+{
+    if (system_msgs[command])
+        return true;
+    return false;
+}
+
 
 
 function init_standard_system_commands(in_params)
@@ -66,6 +77,12 @@ function init_standard_system_commands(in_params)
 
 function standard_system_command(command)
 {
+    if (command == 'logfile')
+    {
+		window.open("/log");
+        return;
+    }
+
     if (needs_stash && command == 'update_system')
         command = 'update_system_stash';
     var msg = system_msgs[command];
@@ -75,7 +92,10 @@ function standard_system_command(command)
         $(system_params.show_command).html(command);
     $('.cover_screen').show();
 
-    system_command = command;
+    if (command == "clear_log")
+        system_command = "log/clear";
+    else
+        system_command = command;
     setTimeout(do_system_command,10);
 }
 

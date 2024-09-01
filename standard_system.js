@@ -136,6 +136,8 @@ function do_system_command()
                     if (system_params.update_button)
                         $(system_params.update_button).html('update');
                 }
+                else if (system_params.show_command)
+                    $(system_params.show_command).html('');
             }
         },
 
